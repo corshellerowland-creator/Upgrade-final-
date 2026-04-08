@@ -1,144 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Faceless Trader</title>
-
 <style>
-body { margin:0; font-family: Arial; background:#0b0b0f; color:white; }
-header { padding:15px; background:#111; display:flex; justify-content:space-between; }
-button { padding:10px; border:none; border-radius:8px; background:hotpink; color:black; font-weight:bold; }
-.container { padding:15px; }
-.card { background:#16161d; padding:15px; margin-bottom:12px; border-radius:12px; }
-input, select { width:100%; padding:8px; margin-top:6px; border-radius:6px; border:none; }
-.tab { display:none; }
-.active { display:block; }
-.nav { position:fixed; bottom:0; width:100%; display:flex; background:#111; }
-.nav button { flex:1; }
+:root{--bg:#09080f;--panel:#13111c;--panel2:#1b1728;--text:#f5f4fb;--muted:#b8b1d0;--accent:#ff4fd8;--accent2:#8a5cff;--success:#35d08a;--danger:#ff5d7a}
+body.theme-alt{--bg:#071112;--panel:#0f1b1c;--panel2:#132527;--text:#edfdfb;--muted:#aed2cc;--accent:#2df2c9;--accent2:#41a5ff}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at top right, rgba(138,92,255,.14), transparent 28%),radial-gradient(circle at top left, rgba(255,79,216,.12), transparent 25%),linear-gradient(180deg,#06060a,var(--bg));color:var(--text);font-family:Arial,sans-serif}
+.app{max-width:520px;margin:0 auto;min-height:100vh;padding-bottom:36px}
+.topbar{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:rgba(8,8,12,.82);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+.brand-wrap{display:flex;align-items:center;gap:12px}.brand-avatar{width:42px;height:42px;border-radius:14px;position:relative;overflow:hidden;background:linear-gradient(180deg,var(--accent2),var(--accent))}
+.brand-avatar:before{content:"";position:absolute;inset:7px 9px 5px 9px;border-radius:14px 14px 9px 9px;background:linear-gradient(180deg,#111,#25203a)} .brand-avatar:after{content:"";position:absolute;left:10px;right:10px;bottom:8px;height:12px;border-radius:20px;background:linear-gradient(180deg,#2f2944,#0f0d17)}
+.brand h1{font-size:15px;line-height:1.05;margin:0}.brand p{margin:2px 0 0;font-size:11px;color:var(--muted)}
+button{cursor:pointer}.ghost,.primary,.pill,.hub{border:none;border-radius:16px;color:var(--text);padding:10px 12px;font-weight:700}
+.ghost{background:transparent;border:1px solid rgba(255,255,255,.12)} .primary{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff}
+.small{font-size:12px;padding:8px 10px}.screen{display:none;padding:14px}.screen.active{display:block}
+.hero{position:relative;padding:18px;border-radius:26px;background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)),linear-gradient(135deg, rgba(138,92,255,.22), rgba(255,79,216,.13));overflow:hidden;margin-bottom:14px}
+.hero.alt{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)),linear-gradient(135deg, rgba(255,93,122,.18), rgba(255,79,216,.12))}
+.hero.live{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)),linear-gradient(135deg, rgba(255,79,216,.18), rgba(138,92,255,.18))}
+.hero:after{content:"";position:absolute;right:-10px;top:-15px;width:155px;height:180px;background:radial-gradient(circle at 50% 18%, rgba(255,255,255,.22) 0 8%, transparent 9%),linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0));border-radius:80px 80px 24px 24px;opacity:.38;transform:rotate(-6deg)}
+.hero h2{margin:0 0 4px;font-size:22px}.hero p{margin:0;color:#e5def7;font-size:13px;max-width:260px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hub{background:linear-gradient(180deg,var(--panel2),var(--panel));border-radius:22px;padding:14px;min-height:92px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.05)}
+.hub.active{outline:1px solid rgba(255,255,255,.16)} .hub .mini{font-size:11px;color:var(--muted);margin-top:6px}.hub .title{font-weight:800}
+.card{background:linear-gradient(180deg,var(--panel2),var(--panel));padding:14px;border-radius:22px;margin-bottom:12px;border:1px solid rgba(255,255,255,.05)}
+.card h3,.card h4{margin:0 0 10px}.subtle{color:var(--muted);font-size:12px}
+input,select,textarea{width:100%;margin-top:8px;padding:12px 13px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:#0f0d17;color:var(--text);outline:none}
+textarea{min-height:90px;resize:vertical} label.ck{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px}
+input[type=checkbox]{width:18px;height:18px;margin:0;accent-color:var(--accent)} .statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:rgba(255,255,255,.03);border-radius:16px;padding:10px;text-align:center}.n{font-size:18px;font-weight:800}
+.progress{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent))}
+.list{display:grid;gap:8px}.trade{background:rgba(255,255,255,.03);padding:11px;border-radius:16px;border:1px solid rgba(255,255,255,.05)}
+.inline{display:flex;gap:8px;flex-wrap:wrap}.mode{padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.06);font-size:12px}.mode.on{background:linear-gradient(135deg,var(--accent2),var(--accent));font-weight:800}
+.output-box{padding:14px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)} .center{text-align:center}
 </style>
 </head>
-
 <body>
-
-<header>
-  <div>🔥 Faceless Trader</div>
-  <button onclick="switchTheme()">Theme</button>
-</header>
-
-<div class="container">
-
-<div id="dashboard" class="tab active">
-  <div class="card">
-    <h3>Daily Goal</h3>
-    <input id="goal" placeholder="Enter Goal $" />
-  </div>
-
-  <div class="card">
-    <h3>Session</h3>
-    <select id="session">
-      <option>Asia</option>
-      <option>London</option>
-      <option>NY</option>
-    </select>
-    <button onclick="startTimer()">Start Session</button>
-    <p id="timer">Timer: 0</p>
-  </div>
-
-  <div class="card">
-    <h3>Lockout</h3>
-    <button onclick="lockout()">Am I allowed to trade?</button>
-    <p id="lockStatus">Ready</p>
-  </div>
+<div class="app">
+<div class="topbar">
+  <div class="brand-wrap"><div class="brand-avatar"></div><div class="brand"><h1>Faceless Trader</h1><p>Discipline. Execution. Control.</p></div></div>
+  <div><button class="ghost small" onclick="toggleTheme()">Theme</button> <button class="ghost small" onclick="goHome()">Hub</button></div>
 </div>
 
-<div id="journal" class="tab">
-  <div class="card">
-    <h3>Add Trade</h3>
-    <input id="pnl" placeholder="PnL $" />
-    <select id="strategy">
-      <option>S&D</option>
-      <option>ICC</option>
-      <option>EMA</option>
-    </select>
-    <button onclick="saveTrade()">Save</button>
-  </div>
+<section id="hub-screen" class="screen active"><div class="hero"><h2>Command Center</h2><p>Grid hub blueprint loaded with your sections and strategy flow.</p></div>
+<div class="card"><div class="statgrid"><div class="stat"><div class="subtle">Trades</div><div class="n" id="quickTrades">0</div></div><div class="stat"><div class="subtle">PnL</div><div class="n" id="quickPnl">$0</div></div><div class="stat"><div class="subtle">Status</div><div class="n" id="quickLock">Open</div></div></div></div>
+<div class="grid">
+<button class="hub active" onclick="openScreen('home-screen')"><div class="title">Home</div><div class="mini">Goal • Timer • Status</div></button>
+<button class="hub" onclick="openScreen('plan-screen')"><div class="title">Plan</div><div class="mini">Rules • Mindset</div></button>
+<button class="hub" onclick="openScreen('strategy-screen')"><div class="title">Strategy</div><div class="mini">S&D • ICC • EMA • ORB</div></button>
+<button class="hub" onclick="openScreen('live-screen')"><div class="title">Live</div><div class="mini">Session mode</div></button>
+<button class="hub" onclick="openScreen('lock-screen')"><div class="title">Lock</div><div class="mini">Auto enforcement</div></button>
+<button class="hub" onclick="openScreen('pnl-screen')"><div class="title">PnL</div><div class="mini">Daily totals</div></button>
+<button class="hub" onclick="openScreen('eval-screen')"><div class="title">Eval</div><div class="mini">Prop progress</div></button>
+<button class="hub" onclick="openScreen('fund-screen')"><div class="title">Fund</div><div class="mini">Funded tracker</div></button>
+<button class="hub" onclick="openScreen('journal-screen')"><div class="title">Journal</div><div class="mini">Log and sync</div></button>
+<button class="hub" onclick="openScreen('stats-screen')"><div class="title">Stats</div><div class="mini">Best strategy</div></button>
+<button class="hub" onclick="openScreen('sizer-screen')"><div class="title">Sizer</div><div class="mini">MNQ • MGC</div></button>
+</div></section>
 
-  <div id="trades"></div>
+<section id="home-screen" class="screen"><div class="hero"><h2>Home</h2><p>Clean luxury mode. Daily goal, session, timer, and quick control.</p></div>
+<div class="card"><h3>Daily Goal</h3><input id="dailyGoal" type="number" value="300" oninput="updateGoalProgress()"><div style="height:10px"></div><div class="progress"><span id="goalBar"></span></div><div class="subtle" id="goalText">0% of daily goal</div></div>
+<div class="card"><h3>Session</h3><div class="inline"><button class="pill" onclick="setSession('Asia')">Asia</button><button class="pill" onclick="setSession('London')">London</button><button class="pill" onclick="setSession('NY')">NY</button></div><div style="height:8px"></div><div class="subtle">Current session: <span id="currentSession">Asia</span></div><div style="height:10px"></div><div class="inline"><button class="primary" onclick="startTimer()">Start Timer</button><button class="ghost" onclick="stopTimer()">Stop Early</button><button class="ghost" onclick="startFocusBlock()">⭐ 2H Block</button></div><div style="height:10px"></div><div class="output-box"><div>Timer: <strong id="timer">00:00:00</strong></div><div class="subtle" id="timerMode">Timer idle</div></div></div>
+<div class="card"><h3>Quick Status</h3><div class="statgrid"><div class="stat"><div class="subtle">Trades</div><div class="n" id="homeTrades">0</div></div><div class="stat"><div class="subtle">PnL</div><div class="n" id="homePnl">$0</div></div><div class="stat"><div class="subtle">Lock</div><div class="n" id="homeLock">Open</div></div></div></div></section>
+
+<section id="plan-screen" class="screen"><div class="hero"><h2>Plan</h2><p>Discipline system. Your rules stay visible before execution.</p></div>
+<div class="card"><h3>Daily Rules</h3><div class="list"><div class="trade">Max trades: <strong>3</strong></div><div class="trade">Max daily loss: <strong>-$300</strong></div><div class="trade">Wait for setup. No chasing. Follow checklist.</div><div class="trade">If key checklist items are missing, no trade.</div></div></div>
+<div class="card"><h3>Mindset</h3><textarea>I only take clean setups. I protect capital. I follow the plan.</textarea></div></section>
+
+<section id="strategy-screen" class="screen"><div class="hero alt"><h2>Strategy Hub</h2><p>Choose a strategy flow. Supply & Demand uses Checklist → Decision → Output.</p></div>
+<div class="two"><button class="hub" onclick="openScreen('sd-screen')"><div class="title">Supply & Demand</div><div class="mini">Checklist engine</div></button><button class="hub" onclick="openScreen('icc-screen')"><div class="title">ICC</div><div class="mini">I → C → C</div></button><button class="hub" onclick="openScreen('ema-screen')"><div class="title">EMA</div><div class="mini">TP1 15 • TP2 30</div></button><button class="hub" onclick="openScreen('orb-screen')"><div class="title">ORB</div><div class="mini">Opening range breakout</div></button></div></section>
+
+<section id="sd-screen" class="screen"><div class="hero alt"><h2>Supply & Demand</h2><p>Checklist → Zone Decision → Output</p></div>
+<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3>Checklist</h3><div class="mode on" id="sdScore">Score 0 / 9</div></div>
+<h4>Zone Quality</h4><label class="ck"><input type="checkbox" class="sd-item" onchange="updateSdScore()"><span>Fresh/untouched zone with clear imbalance or displacement.</span></label>
+<h4>Extreme Location</h4><label class="ck"><input type="checkbox" class="sd-item" onchange="updateSdScore()"><span>Zone is at an extreme, not in the middle of chop.</span></label>
+<h4>Higher Time Frame</h4><label class="ck"><input type="checkbox" class="sd-item" onchange="updateSdScore()"><span>Zone exists on 1H/4H and aligns with trend.</span></label>
+<h4>Structure Confirmation</h4><label class="ck"><input type="checkbox" class="sd-item" onchange="updateSdScore()"><span>Break of structure or momentum shift after liquidity sweep.</span></label>
+<h4>Entry Confirmation</h4><label class="ck"><input type="checkbox" class="sd-item" onchange="updateSdScore()"><span>Price taps zone cleanly and reacts or shifts structure.</span></label>
+<h4>Momentum / Displacement</h4><label class="ck"><input type="checkbox" class="sd-item" onchange="updateSdScore()"><span>Strong impulse into or out of the zone.</span></label>
+<h4>Targets</h4><label class="ck"><input type="checkbox" class="sd-item" onchange="updateSdScore()"><span>Next opposing zone identified with at least 2R path.</span></label>
+<h4>Risk Management</h4><label class="ck"><input type="checkbox" class="sd-item" onchange="updateSdScore()"><span>Stop outside the zone and size fits the plan.</span></label>
+<h4>Session Context</h4><label class="ck"><input type="checkbox" class="sd-item" onchange="updateSdScore()"><span>Setup is in a valid session and not dead hours.</span></label>
+<div class="inline" style="margin-top:12px"><select id="sdZoneType"><option value="Demand">Demand Zone</option><option value="Supply">Supply Zone</option></select><button class="ghost" onclick="resetSd()">Reset</button><button class="primary" onclick="openScreen('sd-decision-screen')">Continue</button></div></div></section>
+
+<section id="sd-decision-screen" class="screen"><div class="hero alt"><h2>Zone Decision</h2><p>What is price doing at the zone?</p></div>
+<div class="card center"><div class="two"><button class="primary" onclick="sdDecision('Valid')">🟢 Valid</button><button class="ghost" onclick="sdDecision('Failed')">🔴 Failed</button></div><div style="height:10px"></div><button class="ghost" style="width:100%" onclick="sdDecision('No Trade')">⚫ No Trade</button></div></section>
+
+<section id="sd-output-screen" class="screen"><div class="hero alt"><h2>Output</h2><p>Auto-generated plan based on zone type and decision.</p></div>
+<div class="card"><div class="output-box"><div class="n" id="sdOutputTitle">Waiting…</div><hr style="border:none;height:1px;background:rgba(255,255,255,.06);margin:12px 0"><div class="subtle" id="sdOutputBody">Select a zone decision to generate the plan.</div></div><div class="inline" style="margin-top:12px"><button class="ghost" onclick="openScreen('journal-screen')">Log Trade</button><button class="primary" onclick="openScreen('sd-screen')">Back to Checklist</button></div></div></section>
+
+<section id="icc-screen" class="screen"><div class="hero alt"><h2>ICC</h2><p>Indication → Correction → Continuation</p></div>
+<div class="card"><label class="ck"><input type="checkbox" class="icc-item" onchange="updateIcc()"> <span>Indication present</span></label><label class="ck"><input type="checkbox" class="icc-item" onchange="updateIcc()"> <span>Correction identified</span></label><label class="ck"><input type="checkbox" class="icc-item" onchange="updateIcc()"> <span>Continuation confirmed</span></label><label class="ck"><input type="checkbox" class="icc-item" onchange="updateIcc()"> <span>Liquidity sweep / displacement present</span></label><div class="mode" id="iccResult">Waiting for confirmation</div></div></section>
+
+<section id="ema-screen" class="screen"><div class="hero alt"><h2>EMA</h2><p>EMA entry logic with fixed targets for now.</p></div><div class="card"><div class="list"><div class="trade">Entry with EMA conditions aligned</div><div class="trade">TP1 = 15 points</div><div class="trade">TP2 = 30 points</div><div class="trade">Adjust later per ticker if needed</div></div></div></section>
+
+<section id="orb-screen" class="screen"><div class="hero alt"><h2>ORB</h2><p>Opening Range Breakout strategy section.</p></div><div class="card"><select><option>15 Minute ORB</option><option>30 Minute ORB</option></select><input placeholder="Premarket high"><input placeholder="Premarket low"><textarea>Break + retest or clean breakout momentum. Use with indices / SPY style flow.</textarea></div></section>
+
+<section id="live-screen" class="screen"><div class="hero live"><h2>Live</h2><p>High-energy mode for current session focus.</p></div><div class="card"><div class="statgrid"><div class="stat"><div class="subtle">Current Session</div><div class="n" id="liveSession">Asia</div></div><div class="stat"><div class="subtle">Running PnL</div><div class="n" id="livePnl">$0</div></div><div class="stat"><div class="subtle">Timer</div><div class="n" id="liveTimer">00:00</div></div></div></div><div class="card"><h3>Execution State</h3><div class="inline"><div class="mode on">Locked In</div><div class="mode">No Chasing</div><div class="mode">Wait for Setup</div></div></div></section>
+
+<section id="lock-screen" class="screen"><div class="hero alt"><h2>Lock</h2><p>Aggressive stop screen. This section tells you if the system allows trading.</p></div><div class="card"><div class="statgrid"><div class="stat"><div class="subtle">Trades Used</div><div class="n" id="lockTrades">0</div></div><div class="stat"><div class="subtle">Loss Used</div><div class="n" id="lockLoss">$0</div></div><div class="stat"><div class="subtle">Status</div><div class="n" id="lockStatus">Open</div></div></div><div style="height:10px"></div><div class="list"><div class="trade">Locks after 3 trades</div><div class="trade">Locks after -$300 loss</div><div class="trade">Locks at end of focus/session timer</div></div></div></section>
+
+<section id="pnl-screen" class="screen"><div class="hero live"><h2>PnL</h2><p>Daily totals now, expandable later.</p></div><div class="card"><div class="statgrid"><div class="stat"><div class="subtle">Daily PnL</div><div class="n" id="pnlDaily">$0</div></div><div class="stat"><div class="subtle">Wins</div><div class="n" id="pnlWins">0</div></div><div class="stat"><div class="subtle">Losses</div><div class="n" id="pnlLosses">0</div></div></div></div></section>
+
+<section id="eval-screen" class="screen"><div class="hero"><h2>Eval</h2><p>Track prop accounts and progress.</p></div><div class="card"><div class="two"><input id="evalName" placeholder="Account / firm"><input id="evalBalance" type="number" placeholder="Balance"></div><div class="two"><input id="evalGoal" type="number" placeholder="Goal"><input id="evalDD" type="number" placeholder="Drawdown left"></div><button class="primary" style="margin-top:10px" onclick="saveEval()">Add / Update Eval</button></div><div class="card"><h3>Eval Accounts</h3><div class="list" id="evalList"></div></div></section>
+
+<section id="fund-screen" class="screen"><div class="hero"><h2>Fund</h2><p>Funded tracker with payout notes.</p></div><div class="card"><div class="two"><input id="fundName" placeholder="Funded account"><input id="fundBalance" type="number" placeholder="Balance"></div><input id="fundPayout" type="number" placeholder="Payout available"><button class="primary" style="margin-top:10px" onclick="saveFund()">Add / Update Funded</button></div><div class="card"><h3>Funded Accounts</h3><div class="list" id="fundList"></div></div></section>
+
+<section id="journal-screen" class="screen"><div class="hero"><h2>Journal</h2><p>Central brain. Journal feeds stats, eval, and funded summaries.</p></div><div class="card"><div class="two"><input id="tradePnl" type="number" placeholder="PnL"><select id="tradeStrategy"><option>Supply & Demand</option><option>ICC</option><option>EMA</option><option>ORB</option></select></div><div class="two"><select id="tradeSession"><option>Asia</option><option>London</option><option>NY</option></select><select id="tradeAccountType"><option>None</option><option>Eval</option><option>Funded</option></select></div><input id="tradeAccountName" placeholder="Optional account name"><input id="tradeShot" placeholder="Screenshot filename / note"><textarea id="tradeNotes" placeholder="Trade notes"></textarea><button class="primary" style="margin-top:10px" onclick="logTrade()">Save Trade</button></div><div class="card"><h3>Trade History</h3><div class="list" id="tradeList"></div></div></section>
+
+<section id="stats-screen" class="screen"><div class="hero"><h2>Stats</h2><p>Best strategy, win rate, session performance.</p></div><div class="card"><div class="statgrid"><div class="stat"><div class="subtle">Best Strategy</div><div class="n" id="bestStrategy">-</div></div><div class="stat"><div class="subtle">Win Rate</div><div class="n" id="winRate">0%</div></div><div class="stat"><div class="subtle">Best Session</div><div class="n" id="bestSession">-</div></div></div></div><div class="card"><h3>Strategy Breakdown</h3><div class="list" id="strategyStats"></div></div></section>
+
+<section id="sizer-screen" class="screen"><div class="hero"><h2>Sizer</h2><p>Quick contract calculator for MNQ and MGC.</p></div><div class="card"><select id="sizerSymbol"><option value="MNQ">MNQ</option><option value="MGC">MGC</option></select><input id="riskAmount" type="number" placeholder="Risk amount ($)"><input id="stopPoints" type="number" placeholder="Stop points"><button class="primary" style="margin-top:10px" onclick="calcSize()">Calculate</button><div style="height:10px"></div><div class="output-box" id="sizeOutput">Enter risk and stop points.</div></div></section>
+
 </div>
-
-<div id="strategyTab" class="tab">
-  <div class="card">
-    <h3>Supply & Demand</h3>
-    <label><input type="checkbox"/> Fresh Zone</label><br/>
-    <label><input type="checkbox"/> HTF Trend</label><br/>
-    <label><input type="checkbox"/> BOS Confirm</label><br/>
-  </div>
-
-  <div class="card">
-    <h3>EMA Strategy</h3>
-    <p>TP1 = 15 pts | TP2 = 30 pts</p>
-  </div>
-</div>
-
-<div id="stats" class="tab">
-  <div class="card">
-    <h3>Stats</h3>
-    <p id="total">Total PnL: 0</p>
-  </div>
-</div>
-
-</div>
-
-<div class="nav">
-  <button onclick="showTab('dashboard')">Home</button>
-  <button onclick="showTab('journal')">Journal</button>
-  <button onclick="showTab('strategyTab')">Strategy</button>
-  <button onclick="showTab('stats')">Stats</button>
-</div>
-
 <script>
-let trades = [];
-let total = 0;
-let locked = false;
-let timerInterval;
-
-function showTab(tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(tab).classList.add('active');
-}
-
-function saveTrade() {
-  let pnl = parseFloat(document.getElementById('pnl').value);
-  let strat = document.getElementById('strategy').value;
-
-  trades.push({ pnl, strat });
-  total += pnl;
-
-  document.getElementById('trades').innerHTML += 
-    `<div class="card">${strat} | $${pnl}</div>`;
-
-  document.getElementById('total').innerText = "Total PnL: $" + total;
-}
-
-function startTimer() {
-  let time = 0;
-  clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
-    time++;
-    document.getElementById('timer').innerText = "Timer: " + time + "s";
-  }, 1000);
-}
-
-function lockout() {
-  document.getElementById('lockStatus').innerText = locked ? "Locked ❌" : "Allowed ✅";
-}
-
-function switchTheme() {
-  document.body.style.background =
-    document.body.style.background === 'black' ? '#0b0b0f' : 'black';
-}
+const state={session:'Asia',locked:false,trades:0,pnl:0,loss:0,wins:0,losses:0,focus:false,timeSec:0,timerId:null,strategyPnL:{'Supply & Demand':0,'ICC':0,'EMA':0,'ORB':0},strategyCount:{'Supply & Demand':0,'ICC':0,'EMA':0,'ORB':0},sessionPnL:{'Asia':0,'London':0,'NY':0},evals:[],funds:[],tradesLog:[]};
+function money(n){const sign=n<0?'-':'';return sign+'$'+Math.abs(n).toFixed(0)}
+function showOnly(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function openScreen(id){showOnly(id)} function goHome(){showOnly('hub-screen')} function toggleTheme(){document.body.classList.toggle('theme-alt')}
+function syncUI(){quickTrades.textContent=state.trades;quickPnl.textContent=money(state.pnl);quickLock.textContent=state.locked?'Locked':'Open';homeTrades.textContent=state.trades;homePnl.textContent=money(state.pnl);homeLock.textContent=state.locked?'Locked':'Open';liveSession.textContent=state.session;livePnl.textContent=money(state.pnl);lockTrades.textContent=state.trades;lockLoss.textContent=money(state.loss);lockStatus.textContent=state.locked?'Locked':'Open';pnlDaily.textContent=money(state.pnl);pnlWins.textContent=state.wins;pnlLosses.textContent=state.losses;updateGoalProgress();updateStats()}
+function setSession(s){state.session=s;currentSession.textContent=s;syncUI()}
+function formatTime(sec){const h=String(Math.floor(sec/3600)).padStart(2,'0');const m=String(Math.floor((sec%3600)/60)).padStart(2,'0');const s=String(sec%60).padStart(2,'0');return `${h}:${m}:${s}`}
+function tickTimer(){state.timeSec++;timer.textContent=formatTime(state.timeSec);liveTimer.textContent=formatTime(state.timeSec).slice(3);if(state.focus&&state.timeSec>=7200){state.locked=true;clearInterval(state.timerId);timerMode.textContent='Focus block ended — system locked';syncUI()}}
+function startTimer(){clearInterval(state.timerId);state.focus=false;state.timeSec=0;timerMode.textContent='Session timer running';state.timerId=setInterval(tickTimer,1000)}
+function startFocusBlock(){clearInterval(state.timerId);state.focus=true;state.timeSec=0;timerMode.textContent='2-hour focus block running';state.timerId=setInterval(tickTimer,1000)}
+function stopTimer(){clearInterval(state.timerId);timerMode.textContent='Timer stopped early'}
+function updateGoalProgress(){const goal=Number(dailyGoal.value||0);const pct=goal>0?Math.max(0,Math.min(100,(state.pnl/goal)*100)):0;goalBar.style.width=pct+'%';goalText.textContent=`${pct.toFixed(0)}% of daily goal`}
+function updateSdScore(){const score=[...document.querySelectorAll('.sd-item')].filter(x=>x.checked).length;sdScore.textContent=`Score ${score} / 9`}
+function resetSd(){document.querySelectorAll('.sd-item').forEach(x=>x.checked=false);updateSdScore()}
+function sdDecision(decision){const zone=sdZoneType.value;let title='',body='';if(decision==='No Trade'){title='No Trade';body='Stay out. Conditions are incomplete or price is not giving a clean decision at the zone.'}else if(zone==='Supply'&&decision==='Valid'){title='Sell Setup';body='Valid at Supply → Sell. Stop above supply. Target next demand.'}else if(zone==='Demand'&&decision==='Valid'){title='Buy Setup';body='Valid at Demand → Buy. Stop below demand. Target next supply.'}else if(zone==='Supply'&&decision==='Failed'){title='Failed Supply';body='Failed at Supply → Buy after break/retest confirmation.'}else if(zone==='Demand'&&decision==='Failed'){title='Failed Demand';body='Failed at Demand → Sell after break/retest confirmation.'}sdOutputTitle.textContent=title;sdOutputBody.textContent=body;openScreen('sd-output-screen')}
+function updateIcc(){const checks=[...document.querySelectorAll('.icc-item')].filter(x=>x.checked).length;iccResult.textContent=checks>=3?'ICC aligned':'Waiting for confirmation';iccResult.className=checks>=3?'mode on':'mode'}
+function renderTrades(){tradeList.innerHTML='';state.tradesLog.forEach(t=>{const div=document.createElement('div');div.className='trade';div.innerHTML=`<strong>${t.strategy}</strong> • ${money(t.pnl)} • ${t.session}<br><span class="subtle">${t.accountType}${t.accountName?' - '+t.accountName:''}${t.shot?' • '+t.shot:''}</span>${t.notes?'<br><span class="subtle">'+t.notes+'</span>':''}`;tradeList.appendChild(div)})}
+function renderEvals(){evalList.innerHTML='';state.evals.forEach(e=>{const pct=e.goal>0?((e.balance/e.goal)*100).toFixed(0):0;const div=document.createElement('div');div.className='trade';div.innerHTML=`<strong>${e.name}</strong><br><span class="subtle">Balance ${money(e.balance)} • Goal ${money(e.goal)} • DD ${money(e.dd)} • Progress ${pct}%</span>`;evalList.appendChild(div)})}
+function renderFunds(){fundList.innerHTML='';state.funds.forEach(f=>{const div=document.createElement('div');div.className='trade';div.innerHTML=`<strong>${f.name}</strong><br><span class="subtle">Balance ${money(f.balance)} • Payout ${money(f.payout)}</span>`;fundList.appendChild(div)})}
+function saveEval(){const name=evalName.value.trim(),balance=Number(evalBalance.value||0),goal=Number(evalGoal.value||0),dd=Number(evalDD.value||0);if(!name)return;const e=state.evals.find(x=>x.name===name);if(e){e.balance=balance;e.goal=goal;e.dd=dd}else state.evals.push({name,balance,goal,dd});renderEvals();evalName.value=evalBalance.value=evalGoal.value=evalDD.value=''}
+function saveFund(){const name=fundName.value.trim(),balance=Number(fundBalance.value||0),payout=Number(fundPayout.value||0);if(!name)return;const f=state.funds.find(x=>x.name===name);if(f){f.balance=balance;f.payout=payout}else state.funds.push({name,balance,payout});renderFunds();fundName.value=fundBalance.value=fundPayout.value=''}
+function updateStats(){const total=state.wins+state.losses;winRate.textContent=(total?((state.wins/total)*100).toFixed(0):0)+'%';let best='-',bestVal=-Infinity;Object.keys(state.strategyPnL).forEach(k=>{if(state.strategyPnL[k]>bestVal){bestVal=state.strategyPnL[k];best=k}});bestStrategy.textContent=bestVal===-Infinity?'-':best;let sess='-',sv=-Infinity;Object.keys(state.sessionPnL).forEach(k=>{if(state.sessionPnL[k]>sv){sv=state.sessionPnL[k];sess=k}});bestSession.textContent=sv===-Infinity?'-':sess;strategyStats.innerHTML='';Object.keys(state.strategyPnL).forEach(k=>{const div=document.createElement('div');div.className='trade';div.innerHTML=`<strong>${k}</strong><br><span class="subtle">PnL ${money(state.strategyPnL[k])} • Trades ${state.strategyCount[k]}</span>`;strategyStats.appendChild(div)})}
+function logTrade(){if(state.locked){alert('System is locked. No more trades.');return}const pnl=Number(tradePnl.value||0),strategy=tradeStrategy.value,session=tradeSession.value,accountType=tradeAccountType.value,accountName=tradeAccountName.value.trim(),shot=tradeShot.value.trim(),notes=tradeNotes.value.trim();state.trades+=1;state.pnl+=pnl;if(pnl<0){state.loss+=pnl;state.losses+=1}else if(pnl>0){state.wins+=1}state.strategyPnL[strategy]+=pnl;state.strategyCount[strategy]+=1;state.sessionPnL[session]+=pnl;state.tradesLog.unshift({pnl,strategy,session,accountType,accountName,shot,notes});if(accountType==='Eval'&&accountName){const f=state.evals.find(x=>x.name===accountName);if(f)f.balance+=pnl} if(accountType==='Funded'&&accountName){const f=state.funds.find(x=>x.name===accountName);if(f)f.balance+=pnl} if(state.trades>=3||state.loss<=-300){state.locked=true} renderTrades();renderEvals();renderFunds();syncUI();tradePnl.value=tradeAccountName.value=tradeShot.value=tradeNotes.value=''}
+function calcSize(){const sym=sizerSymbol.value,risk=Number(riskAmount.value||0),stop=Number(stopPoints.value||0);if(!risk||!stop){sizeOutput.textContent='Enter risk and stop points.';return}const pointValue=sym==='MNQ'?2:10;const per=stop*pointValue;const c=Math.max(1,Math.floor(risk/per));sizeOutput.innerHTML=`<strong>${sym}</strong><br>Point value: $${pointValue}<br>Risk per contract: ${money(per)}<br>Suggested contracts: <strong>${c}</strong>`}
+syncUI();renderTrades();renderEvals();renderFunds();updateSdScore();
 </script>
-
-</body>
-</html>
+</body></html>
