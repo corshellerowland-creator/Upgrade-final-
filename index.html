@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Faceless Trader</title>
+
+<style>
+body { margin:0; font-family: Arial; background:#0b0b0f; color:white; }
+header { padding:15px; background:#111; display:flex; justify-content:space-between; }
+button { padding:10px; border:none; border-radius:8px; background:hotpink; color:black; font-weight:bold; }
+.container { padding:15px; }
+.card { background:#16161d; padding:15px; margin-bottom:12px; border-radius:12px; }
+input, select { width:100%; padding:8px; margin-top:6px; border-radius:6px; border:none; }
+.tab { display:none; }
+.active { display:block; }
+.nav { position:fixed; bottom:0; width:100%; display:flex; background:#111; }
+.nav button { flex:1; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>🔥 Faceless Trader</div>
+  <button onclick="switchTheme()">Theme</button>
+</header>
+
+<div class="container">
+
+<div id="dashboard" class="tab active">
+  <div class="card">
+    <h3>Daily Goal</h3>
+    <input id="goal" placeholder="Enter Goal $" />
+  </div>
+
+  <div class="card">
+    <h3>Session</h3>
+    <select id="session">
+      <option>Asia</option>
+      <option>London</option>
+      <option>NY</option>
+    </select>
+    <button onclick="startTimer()">Start Session</button>
+    <p id="timer">Timer: 0</p>
+  </div>
+
+  <div class="card">
+    <h3>Lockout</h3>
+    <button onclick="lockout()">Am I allowed to trade?</button>
+    <p id="lockStatus">Ready</p>
+  </div>
+</div>
+
+<div id="journal" class="tab">
+  <div class="card">
+    <h3>Add Trade</h3>
+    <input id="pnl" placeholder="PnL $" />
+    <select id="strategy">
+      <option>S&D</option>
+      <option>ICC</option>
+      <option>EMA</option>
+    </select>
+    <button onclick="saveTrade()">Save</button>
+  </div>
+
+  <div id="trades"></div>
+</div>
+
+<div id="strategyTab" class="tab">
+  <div class="card">
+    <h3>Supply & Demand</h3>
+    <label><input type="checkbox"/> Fresh Zone</label><br/>
+    <label><input type="checkbox"/> HTF Trend</label><br/>
+    <label><input type="checkbox"/> BOS Confirm</label><br/>
+  </div>
+
+  <div class="card">
+    <h3>EMA Strategy</h3>
+    <p>TP1 = 15 pts | TP2 = 30 pts</p>
+  </div>
+</div>
+
+<div id="stats" class="tab">
+  <div class="card">
+    <h3>Stats</h3>
+    <p id="total">Total PnL: 0</p>
+  </div>
+</div>
+
+</div>
+
+<div class="nav">
+  <button onclick="showTab('dashboard')">Home</button>
+  <button onclick="showTab('journal')">Journal</button>
+  <button onclick="showTab('strategyTab')">Strategy</button>
+  <button onclick="showTab('stats')">Stats</button>
+</div>
+
+<script>
+let trades = [];
+let total = 0;
+let locked = false;
+let timerInterval;
+
+function showTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tab).classList.add('active');
+}
+
+function saveTrade() {
+  let pnl = parseFloat(document.getElementById('pnl').value);
+  let strat = document.getElementById('strategy').value;
+
+  trades.push({ pnl, strat });
+  total += pnl;
+
+  document.getElementById('trades').innerHTML += 
+    `<div class="card">${strat} | $${pnl}</div>`;
+
+  document.getElementById('total').innerText = "Total PnL: $" + total;
+}
+
+function startTimer() {
+  let time = 0;
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    time++;
+    document.getElementById('timer').innerText = "Timer: " + time + "s";
+  }, 1000);
+}
+
+function lockout() {
+  document.getElementById('lockStatus').innerText = locked ? "Locked ❌" : "Allowed ✅";
+}
+
+function switchTheme() {
+  document.body.style.background =
+    document.body.style.background === 'black' ? '#0b0b0f' : 'black';
+}
+</script>
+
+</body>
+</html>
